@@ -174,7 +174,7 @@
       height: 6px; background: #d0d0d0; border-radius: 3px; overflow: hidden;
     }
     .lr-prototype .countdown-bar__fill {
-      height: 100%; width: 100%; background: var(--hs-action); border-radius: 3px;
+      height: 100%; width: 0%; background: var(--hs-action); border-radius: 3px;
       transition: width 0.25s linear;
     }
 
@@ -389,10 +389,10 @@
             <p class="hero-subcopy" id="completeSubcopy"></p>
             <div class="countdown-block" id="countdownRow">
               <p class="countdown-copy" id="countdownCopy"></p>
-              <div class="countdown-progress" id="countdownProgressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="Time until redirect to Results">
+              <div class="countdown-progress" id="countdownProgressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progress until redirect to Results">
                 <div class="countdown-bar">
                   <div class="countdown-bar__track">
-                    <div class="countdown-bar__fill" id="countdownProgressFill"></div>
+                    <div class="countdown-bar__fill" id="countdownProgressFill" style="width: 0%"></div>
                   </div>
                 </div>
               </div>
@@ -780,8 +780,8 @@
     }
 
     function updateCountdownUI(remainingSec, durationSec) {
-      const fraction = remainingSec / durationSec;
-      const percent = Math.round(fraction * 100);
+      const elapsedFraction = 1 - remainingSec / durationSec;
+      const percent = Math.round(elapsedFraction * 100);
       els.countdownCopy.innerHTML = COPY.lessonComplete.countdownPrefix +
         ' <strong>' + formatTime(remainingSec) + "</strong> " + COPY.lessonComplete.countdownSuffix;
       els.countdownProgressFill.style.width = percent + "%";
