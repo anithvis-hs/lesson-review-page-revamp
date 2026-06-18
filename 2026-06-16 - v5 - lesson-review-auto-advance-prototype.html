@@ -11,7 +11,7 @@
     Goal: Reduce missed completions by clarifying final step and auto-advancing to Results
     Out of scope: Author settings, real section pages, real API
   -->
-  <!-- v5: redirect banner, stay-on-page pause, inline view-results link, complete accordions -->
+  <!-- v5: redirect banner, stay-on-page pause, complete accordions -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -172,12 +172,6 @@
       margin: 0 0 16px; font-size: 14px; color: var(--hs-text); line-height: 1.5;
     }
     .lr-prototype .redirect-banner__copy strong { font-weight: 700; }
-    .lr-prototype .redirect-banner__link {
-      display: inline; margin: 0; padding: 0; border: none; background: none;
-      font: inherit; font-weight: 600; color: var(--hs-action); cursor: pointer;
-      text-decoration: underline; text-underline-offset: 2px;
-    }
-    .lr-prototype .redirect-banner__link:hover { color: var(--hs-action-hover); }
     .lr-prototype .redirect-banner__actions {
       display: flex; align-items: center; justify-content: center;
       flex-wrap: wrap; gap: 10px; margin-bottom: 16px;
@@ -522,7 +516,6 @@
         countdownPrefix: "You will be redirected to the Lesson Results page in",
         countdownSuffix: "seconds.",
         stopBtn: "Stay on this page",
-        viewResultsNow: "View results now",
         pausedCopy: "Auto-advance paused. View your results when you're ready.",
         seeInLesson: "See in lesson",
         primaryBtn: "View Results"
@@ -884,11 +877,6 @@
       }
     }
 
-    function viewResultsNowLinkHtml() {
-      return ' <button type="button" class="redirect-banner__link" data-action="view-results">' +
-        COPY.lessonComplete.viewResultsNow + "</button>";
-    }
-
     function updateBannerButtons(state) {
       els.btnStayOnPage.textContent = COPY.lessonComplete.stopBtn;
       const stopped = state.countdownStopped || prefersReducedMotion.matches;
@@ -925,8 +913,7 @@
       const fraction = remainingSec / durationSec;
       const percent = Math.round(fraction * 100);
       els.countdownCopy.innerHTML = COPY.lessonComplete.countdownPrefix +
-        ' <strong>' + formatTime(remainingSec) + "</strong> " + COPY.lessonComplete.countdownSuffix +
-        viewResultsNowLinkHtml();
+        ' <strong>' + formatTime(remainingSec) + "</strong> " + COPY.lessonComplete.countdownSuffix;
       els.countdownProgressFill.style.width = percent + "%";
       els.countdownProgressBar.setAttribute("aria-valuenow", String(percent));
       els.countdownProgressBar.style.display = "";
@@ -1085,9 +1072,6 @@
       else if (route === ROUTES.results) showToast(COPY.toast.nextLesson + " " + COPY.results.nextLesson);
     });
 
-    els.redirectBanner.addEventListener("click", function (e) {
-      if (e.target.closest("[data-action='view-results']")) goToResults();
-    });
     els.btnStayOnPage.addEventListener("click", pauseAutoAdvance);
 
     els.btnPrevious.addEventListener("click", function () {
